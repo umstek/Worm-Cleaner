@@ -1,0 +1,21 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Worm_Cleaner"
+        mc:Ignorable="d"
+        Title="Clean-a-Worm" Height="300" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SnapsToDevicePixels="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="{DynamicResource TransparentBrush}">
+    <Grid>
+        <Button x:Name="button" Content="Clean" IsDefault="True" Cursor="Hand" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Bottom" ToolTip="Scan and clean" Margin="147,0,147,13"/>
+        <TextBox x:Name="textBox" Height="23" Margin="61,43,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="njw0rm" RenderTransformOrigin="0.489,1.567" ToolTip="Enter the path or the name (if currently running) of the worm to delete. "/>
+        <Label x:Name="label" Content="Worm" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Height="30"/>
+        <CheckBox x:Name="checkBoxClose" Content="Close and remove if already running" Margin="10,78,10,0" VerticalAlignment="Top" IsChecked="True" ToolTip="If the worm is already running, program will force them to quit, and then delete them, even if not in a removable drive."/>
+        <CheckBox x:Name="checkBoxWorm" Content="Delete worm from removable drives" Margin="10,113,10,0" VerticalAlignment="Top" IsChecked="True" ToolTip="Scan all removable drives and delete the worm from them."/>
+        <CheckBox x:Name="checkBoxShortcuts" Content="Delete all shortcuts (*.lnk) from removable drives" Margin="10,148,10,0" VerticalAlignment="Top" IsChecked="True" ToolTip="Delete all .lnk files (shortcuts) possibly created by the worm. Check this if your contents have become shortcuts."/>
+        <CheckBox x:Name="checkBoxShow" Content="Permanently show system/hidden files" Margin="10,183,10,0" VerticalAlignment="Top" IsChecked="True" ToolTip="Reset attributes of all the file to -s -h. If you can't see the files you put into the drive, check this."/>
+        <Label x:Name="label1" Content="Provide a known worm (instance) to seek and destroy." Margin="10,10,10,0" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="progressBar" Margin="0,0,0,0" Height="8" VerticalAlignment="Bottom"/>
+
+    </Grid>
+</Window>
