@@ -1,6 +1,11 @@
 # Worm-Cleaner
 Remove known worms. Reverse the effects.
 
+## Technology
+* Visual Basic 14
+* Microsoft Visual Studio 14
+* Microsoft .NET framework 4.0 (downgrade pending, for compatibility with Windows 7)
+
 *This is not an antivirus software.*
 
 This tool is useful to reverse the adverse effects caused by a known malware. 
