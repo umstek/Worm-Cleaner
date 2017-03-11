@@ -1,9 +1,7 @@
-﻿Imports System.ComponentModel
-Imports System.Threading
-Imports System.Threading.Tasks
+﻿Imports System.Threading.Tasks
+Imports System.Timers
 
 Class MainWindow
-
     Private Sub button_Click(sender As Object, e As RoutedEventArgs) Handles button.Click
         Dim target = textBox.Text
         Dim shouldKillAndDelete = checkBoxClose.IsChecked
@@ -14,22 +12,22 @@ Class MainWindow
         DoPreTasks()
 
         Dim task = New Task(Sub()
-                                Dim hashes = GetTargetHashes(target)
-                                KillByHash(hashes, CBool(shouldKillAndDelete))
-                                CleanRemovableDrives(hashes,
-                                                     CBool(shouldDeleteWorm),
-                                                     CBool(shouldDeleteShortcuts),
-                                                     CBool(shouldUnhide))
-                            End Sub)
+            Dim hashes = GetTargetHashes(target)
+            KillByHash(hashes, CBool(shouldKillAndDelete))
+            CleanRemovableDrives(hashes,
+                                 CBool(shouldDeleteWorm),
+                                 CBool(shouldDeleteShortcuts),
+                                 CBool(shouldUnhide))
+                               End Sub)
 
-        Dim timer0 = New Timers.Timer(1000)
+        Dim timer0 = New Timer(1000)
         AddHandler timer0.Elapsed, Sub()
-                                       If task.Status = TaskStatus.RanToCompletion Then
-                                           timer0.Dispose()
-                                       End If
+            If task.Status = TaskStatus.RanToCompletion Then
+                timer0.Dispose()
+            End If
                                    End Sub
         AddHandler timer0.Disposed, Sub(senderx As Object, ex As EventArgs)
-                                        Me.Dispatcher.Invoke(New TimerDisposeCallback(AddressOf DoPostTasks), New Object() {senderx, e})
+            Me.Dispatcher.Invoke(New TimerDisposeCallback(AddressOf DoPostTasks), New Object() {senderx, e})
                                     End Sub
 
         task.Start()
@@ -59,6 +57,5 @@ Class MainWindow
         checkBoxShortcuts.IsEnabled = False
         checkBoxShow.IsEnabled = False
     End Sub
-
 End Class
 

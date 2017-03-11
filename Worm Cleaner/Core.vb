@@ -13,11 +13,11 @@ Public Module Core
         Dim hashes As New HashSet(Of String)
 
         If File.Exists(target) Then ' Input is a file
-            Dim [dim] = hashes.Add(GetFileHash(target))
+            hashes.Add(GetFileHash(target))
         Else ' Input is a process
             Dim processes = Process.GetProcessesByName(target)
             For Each process In processes
-                Dim [dim] = hashes.Add(GetFileHash(process.MainModule.FileName))
+                hashes.Add(GetFileHash(process.MainModule.FileName))
             Next
         End If
 
@@ -43,11 +43,11 @@ Public Module Core
                 If shouldDelete Then File.Delete(filePath) ' Delete running file
             End If
         Next
-
     End Sub
 
     Private Function GetRemovableDrives() As List(Of DriveInfo)
-        Return Aggregate driveInfo In DriveInfo.GetDrives() Where driveInfo.DriveType = DriveType.Removable Into ToList()
+        Return _
+            Aggregate driveInfo In DriveInfo.GetDrives() Where driveInfo.DriveType = DriveType.Removable Into ToList()
     End Function
 
     Public Sub CleanRemovableDrives(fileHashes As HashSet(Of String),
@@ -55,17 +55,18 @@ Public Module Core
                                     shouldDeleteShortcuts As Boolean,
                                     shouldUnhide As Boolean)
         Dim removableDrives = GetRemovableDrives()
-        Dim fileQueue = New Queue(Of FileInfo)(removableDrives.
-                                               Select(Function(driveInfo)
-                                                          Return driveInfo.RootDirectory.EnumerateFiles(
+        Dim fileQueue = New Queue(Of FileInfo)(
+            removableDrives.
+                                                  Select(Function(driveInfo)
+                                                      Return driveInfo.RootDirectory.EnumerateFiles(
                                                           "*",
                                                           SearchOption.AllDirectories)
-                                                      End Function).
-                                               SelectMany(Function(fileInfos) fileInfos))
+                                                            End Function).
+                                                  SelectMany(Function(fileInfos) fileInfos))
         For Each fileInfo In fileQueue
             Console.WriteLine(fileInfo.FullName)
 
-            If fileInfo.Length < 10 * 2 ^ 20 Then ' 20 MB
+            If fileInfo.Length < 10*2^20 Then ' 20 MB
                 If shouldDeleteWorm AndAlso fileHashes.Contains(GetFileHash(fileInfo.FullName)) Then ' Delete worm
                     fileInfo.Delete()
                 End If
@@ -81,10 +82,10 @@ Public Module Core
 
         If shouldUnhide Then ' Unhide directories
             removableDrives.
-                Select(Function(driveInfo) driveInfo.RootDirectory.EnumerateDirectories("*", SearchOption.AllDirectories)).
+                Select(
+                    Function(driveInfo) driveInfo.RootDirectory.EnumerateDirectories("*", SearchOption.AllDirectories)).
                 SelectMany(Function(infos) infos).
                 ToList().ForEach(Sub(info) info.Attributes = FileAttributes.Normal)
         End If
     End Sub
-
 End Module
